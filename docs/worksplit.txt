@@ -1,0 +1,16 @@
+Group 58 Work Split
+--------------------------
+
+Note: working on an fxml file implies that person will also be
+be responsible for its corresponding controller.java file!
+
+Brandon			Murtala
+-----------			----------
+PhotoAlbum.java		PhotoAlbum.java
+SearchResults.fxml		SearchResults.fxml
+PhotoList.fxml		PhotoList.fxml
+DeleteWarning.fxml	 	User.java
+WindowMenu.fxml		Tag.java
+Slideshow.fxml		Picture.java
+AdminPage.fxml		LoginPage.fxml
+Editor.fxml		CreateUser.fxml
