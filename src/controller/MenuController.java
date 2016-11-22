@@ -17,19 +17,19 @@ import javafx.stage.FileChooser;
 public class MenuController {
 
     // Reference to the main application
-    private SongLib songLib;
+    private PhotoAlbum songLib;
 
     /**
      * Is called by the main application to give a reference back to itself.
      * 
      * @param songLib
      */
-    public void setSongLib(SongLib songLib) {
+    public void setSongLib(PhotoAlbum songLib) {
         this.songLib = songLib;
     }
 
     /**
-     * Creates an empty address book.
+     * Creates an empty photo album
      */
     @FXML
     private void handleNew() {
@@ -58,7 +58,7 @@ public class MenuController {
     }
 
     /**
-     * Saves the file to the person file that is currently open. If there is no
+     * Saves the file to the album file that is currently open. If there is no
      * open file, the "save as" dialog is shown.
      */
     @FXML
@@ -103,7 +103,7 @@ public class MenuController {
     @FXML
     private void handleAbout() {
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("SongLibrary");
+        alert.setTitle("PhotoAlbum");
         alert.setHeaderText("About");
         alert.setContentText("This application is brought to you by the very awesome Group 58: Brandon and Murtala.");
         alert.showAndWait();

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddNewUserController">
+   <children>
+      <ButtonBar layoutX="300.0" layoutY="292.0" prefHeight="40.0" prefWidth="200.0" />
+      <TextField fx:id="inputField" layoutX="103.0" layoutY="100.0" opacity="0.69" promptText="Name...r" />
+      <Text fill="#053257" layoutX="66.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the name..." />
+    <Button layoutX="259.0" layoutY="100.0" mnemonicParsing="false" onAction="#handleOk" text="Add" textFill="#034d15" />
+   </children>
+</AnchorPane>
