@@ -8,30 +8,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
 import javafx.application.Application;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import model.Album;
 import model.Picture;
-import model.Song;
-import model.SongListWrapper;
-import model.TitleComparator;
 import model.User;
 import javafx.collections.*;
-import javafx.event.EventHandler;
 
 public class PhotoAlbum extends Application {
 	private ObservableList<Album> albumData = FXCollections.observableArrayList();
@@ -69,14 +57,6 @@ public class PhotoAlbum extends Application {
 	
     private Stage openingStage;
     private BorderPane windowMenu;
-    private ObservableList<Song> songData = FXCollections.observableArrayList();
-    
-    public ObservableList<Song> getSongData(){
-    	if(!songData.isEmpty()){
-    		FXCollections.sort(songData, new TitleComparator() );
-    	}
-    	return songData;
-    }
     
     /**
     * Formats the user list into an observableArrayList that can be accessed by the
@@ -115,21 +95,7 @@ public class PhotoAlbum extends Application {
         this.openingStage.getIcons().add(new Image("file:resources/photos.png") );
         
         initRootLayout();
-
-        //showPrimaryDisplay(null);
         showLogin();
-        
-        openingStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-        	public void handle(WindowEvent we) {
-        		File outputFile = getSongFilePath();
-        		if(outputFile != null)
-        			saveSongDataToFile(outputFile);
-        		else{
-        			outputFile = new File("defaultLibrary.xml");
-        			saveSongDataToFile(outputFile);
-        		}
-            }
-        });
     }
 
     /**
@@ -153,13 +119,6 @@ public class PhotoAlbum extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        //Try to load the most recent song list
-        File file = getSongFilePath();
-        if(file != null)
-        {
-            loadSongDataFromFile(file);
-        }
     }
 
     /**
@@ -168,7 +127,7 @@ public class PhotoAlbum extends Application {
     
     
     
-    public void showPrimaryDisplay(Song returnedSong) {
+    public void showPrimaryDisplay(Picture returnedPhoto) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(PhotoAlbum.class.getResource("/view/AlbumList.fxml"));
@@ -178,8 +137,6 @@ public class PhotoAlbum extends Application {
             
             AlbumListController controller = loader.getController();
             controller.setPhotoAlbum(this);
-            //if(returnedSong != null)
-            	//controller.updateSongList(returnedSong);
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -371,56 +328,6 @@ public class PhotoAlbum extends Application {
     public Stage getPrimaryStage() {
         return openingStage;
     }
-    
-    public void loadSongDataFromFile(File file) {
-	    try {
-	        JAXBContext context = JAXBContext.newInstance(SongListWrapper.class);
-	        Unmarshaller um = context.createUnmarshaller();
-
-	        // Reading XML from the file and unmarshalling.
-	        
-	        SongListWrapper wrapper = (SongListWrapper) um.unmarshal(file);
-
-	        songData.clear();
-	        songData.addAll(wrapper.getSongs());
-
-	        // Save the file path to the registry.
-	        setSongFilePath(file);
-
-	    } catch (Exception e) {
-	        Alert alert = new Alert(AlertType.ERROR);
-	        alert.setTitle("Error");
-	        alert.setHeaderText("Error loading data");
-	        alert.setContentText("There was a problem reading this file:\n" + file.getPath());
-
-	        alert.showAndWait();
-	    }
-	}
-    
-    public void saveSongDataToFile(File file) {
-	    try {
-	        JAXBContext context = JAXBContext.newInstance(SongListWrapper.class);
-	        Marshaller m = context.createMarshaller();
-	        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-	        //TODO: Wrapping the song data.
-	        SongListWrapper wrapper = new SongListWrapper();
-	        wrapper.setSongs(songData);
-
-	        // Marshalling and saving XML to the file.
-	        m.marshal(wrapper, file);
-
-	        // Save the file path to the registry.
-	        setSongFilePath(file);
-	    } catch (Exception e) {
-	        Alert alert = new Alert(AlertType.ERROR);
-	        alert.setTitle("Error");
-	        alert.setHeaderText("Error saving data");
-	        alert.setContentText("There was a problem saving to this file:\n" + file.getPath());
-
-	        alert.showAndWait();
-	    }
-	}
 
     public static void main(String[] args) {
         launch(args);

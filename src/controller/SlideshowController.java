@@ -9,8 +9,6 @@ import model.Album;
 import model.Picture;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 /**This controller handles what happens when a user starts a slideshow.
  * @author Murtala
@@ -39,7 +37,6 @@ public class SlideshowController {
 	private Album currentAlbum;
 	private Picture photo;
 	private int numberOfPhotos, position;
-	private String modifiedDate = "";
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 	
@@ -61,7 +58,6 @@ public class SlideshowController {
     	numberOfPhotos = currentAlbum.getPhotos().size();
 		position = currentAlbum.getPhotos().indexOf(photo);
     	
-	    this.modifiedDate = sdf.format(photo.getDate()); 
 	    
     }
     

@@ -33,7 +33,6 @@ public class MenuController {
      */
     @FXML
     private void handleNew() {
-        songLib.getSongData().clear();
         songLib.setSongFilePath(null);
     }
 
@@ -50,11 +49,6 @@ public class MenuController {
         fileChooser.getExtensionFilters().add(extFilter);
 
         // Show save file dialog
-        File file = fileChooser.showOpenDialog(songLib.getPrimaryStage());
-
-        if (file != null) {
-            songLib.loadSongDataFromFile(file);
-        }
     }
 
     /**
@@ -63,14 +57,7 @@ public class MenuController {
      */
     @FXML
     private void handleSave() {
-        File songFile = songLib.getSongFilePath();
-        if (songFile != null) {
-            songLib.saveSongDataToFile(songFile);
-        } else {
-        	songFile = new File("_yourLibrary.xml");
-        	songLib.saveSongDataToFile(songFile);
-        	//handleSaveAs();
-        }
+    	//not necessary
     }
 
     /**
@@ -93,7 +80,6 @@ public class MenuController {
             if (!file.getPath().endsWith(".xml")) {
                 file = new File(file.getPath() + ".xml");
             }
-            songLib.saveSongDataToFile(file);
         }
     }
 
