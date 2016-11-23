@@ -60,7 +60,7 @@ public class StartPageController {
 			 * then we will loop through the list of users and find that user 
 			 */
 			if(photoAlbum.userLogins.contains(usernameField.getText())){
-				System.out.println("We found a match on user "+usernameField.getText());
+				//System.out.println("We found a match on user "+usernameField.getText());
 				while(i < photoAlbum.userList.size()){
 					if(photoAlbum.userList.get(i).getLogin().equals(usernameField.getText())){
 						photoAlbum.currentUser = photoAlbum.userList.get(i);
