@@ -92,10 +92,10 @@ public class SearchResultsController {
     
     
     /**
-     * Fills all text fields to show details about the song.
-     * If the specified song is null, all text fields are cleared.
+     * Fills all text fields to show details about the photo.
+     * If the specified photo is null, all text fields are cleared.
      * 
-     * @param song the song or null
+     * @param photo the photo, or null
      */
     private void showPhotoDetails(Picture photo) {
         if (photo != null) {

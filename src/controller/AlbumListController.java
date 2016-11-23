@@ -223,11 +223,15 @@ public class AlbumListController {
 	@FXML
     private void handleSearch(){
 		String query = sanitizeInput(searchBox.getText() );
-		if(query.length() > 0){
-			ObservableList<Picture> results = photoAlbum.currentUser.searchByTags(query);
-			if(results.size() > 0)
-				photoAlbum.showSearchResults(results);
-			else{
+		String dateQuery = checkForDateSearch(searchBox.getText());
+		
+		//check if search was by tag or date
+		if (dateQuery.length() > 0) {
+			//search by date
+			ObservableList<Picture> result = photoAlbum.currentUser.searchByDate(dateQuery);
+			if (result.size() > 0) {
+				photoAlbum.showSearchResults(result);
+			} else {
 				// Nothing was found
 		        Alert alert = new Alert(AlertType.WARNING);
 		        alert.initOwner(photoAlbum.getPrimaryStage());
@@ -235,34 +239,82 @@ public class AlbumListController {
 		        alert.setHeaderText("Nothing Found");
 		        alert.setContentText("No matches were found.");
 		        alert.showAndWait();
+		        
 			}
-		}
-		else{
-			// Nothing was entered (properly)
-	        Alert alert = new Alert(AlertType.WARNING);
-	        alert.initOwner(photoAlbum.getPrimaryStage());
-	        alert.setTitle("Search Error");
-	        alert.setHeaderText("Bad Query");
-	        alert.setContentText("Please enter a valid search term!");
-	        alert.showAndWait();
+		} else {
+			if(query.length() > 0){
+				ObservableList<Picture> results = photoAlbum.currentUser.searchByTags(query);
+				if(results.size() > 0)
+					photoAlbum.showSearchResults(results);
+				else{
+					// Nothing was found
+			        Alert alert = new Alert(AlertType.WARNING);
+			        alert.initOwner(photoAlbum.getPrimaryStage());
+			        alert.setTitle("Search Failure");
+			        alert.setHeaderText("Nothing Found");
+			        alert.setContentText("No matches were found.");
+			        alert.showAndWait();
+				}
+			}
+			else{
+				// Nothing was entered (properly)
+		        Alert alert = new Alert(AlertType.WARNING);
+		        alert.initOwner(photoAlbum.getPrimaryStage());
+		        alert.setTitle("Search Error");
+		        alert.setHeaderText("Bad Query");
+		        alert.setContentText("Please enter a valid search term!");
+		        alert.showAndWait();
+			}
 		}
 	}
 	
 	 private String sanitizeInput(String dirtyInput){
-			while(dirtyInput.charAt(0) == ' ' || dirtyInput.charAt(0) == ','){
-				dirtyInput = dirtyInput.substring(1);
-				if(dirtyInput.length() == 0)
-					return "";
-			}
-			//the character at index zero must be valid because of the loop we just did!
-			for(int i = dirtyInput.length()-1; i>0;--i){
-				char endingChar = dirtyInput.charAt(i);
-				if(endingChar == ' ' || endingChar == ',')
-					dirtyInput = dirtyInput.substring(0, i);
-				else
-					break;
-			}
-			//this is the fully sanitized input
-			return dirtyInput+",";
+		while(dirtyInput.charAt(0) == ' ' || dirtyInput.charAt(0) == ','){
+			dirtyInput = dirtyInput.substring(1);
+			if(dirtyInput.length() == 0)
+				return "";
 		}
+		//the character at index zero must be valid because of the loop we just did!
+		for(int i = dirtyInput.length()-1; i>0;--i){
+			char endingChar = dirtyInput.charAt(i);
+			if(endingChar == ' ' || endingChar == ',')
+				dirtyInput = dirtyInput.substring(0, i);
+			else
+				break;
+		}
+		//this is the fully sanitized input
+		return dirtyInput+",";
+	}
+	 
+	 private String checkForDateSearch(String dirtyInput) {
+		 if (dirtyInput.length() != 10) {
+			 return "";
+		 }
+		 String temp = dirtyInput.substring(0, 2); temp+= dirtyInput.substring(3, 5); temp += dirtyInput.substring(6, 10);
+		 for (int i = 0; i < 8; i++) {
+			 if (isInteger(temp.substring(i, i+1)) == false) {
+				 return "";
+			 }
+		 }
+		 if ((!dirtyInput.substring(2, 3).equals("/"))) {
+			 if ((!dirtyInput.substring(5, 6).equals("/"))) {
+				 return "";
+			 }
+		 }
+		 
+		 return dirtyInput;
+	 }
+	 
+	 //determine if s is an integer
+	 public static boolean isInteger(String s) {
+		 try { 
+			 Integer.parseInt(s); 
+		 } catch (NumberFormatException e) { 
+			 return false; 
+		 } catch (NullPointerException e) {
+			 return false;
+		 }
+		 	// only got here if we didn't return false
+		 	return true;
+	 }
 }

@@ -39,13 +39,20 @@ public class SlideshowController {
 	private Album currentAlbum;
 	private Picture photo;
 	private int numberOfPhotos, position;
-	private String dateAdded = "";
+	private String modifiedDate = "";
+	
+	private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 	
     //constructor
     public SlideshowController() {
     	
     }
     
+    /**
+     * This method sets the photoAlbum, current album and current photo so that we have a reference
+     * to each.
+     * @param currentAlbum, photo, photoAlbum
+     */
     public void setState(Album currentAlbum, Picture photo, PhotoAlbum photoAlbum) {
     	this.photoAlbum = photoAlbum;
     	this.currentAlbum = currentAlbum;
@@ -54,14 +61,8 @@ public class SlideshowController {
     	numberOfPhotos = currentAlbum.getPhotos().size();
 		position = currentAlbum.getPhotos().indexOf(photo);
     	
-		Date myDate = Calendar.getInstance().getTime();
-	    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd.hhmmss");
-	    String todaysDate = sdf.format(myDate); 
-	    dateAdded += todaysDate.substring(4, 6);
-	    dateAdded += "/";
-	    dateAdded += todaysDate.substring(6, 8);
-	    dateAdded += "/";
-	    dateAdded += todaysDate.substring(0, 4);
+	    this.modifiedDate = sdf.format(photo.getDate()); 
+	    
     }
     
     @FXML
@@ -83,7 +84,7 @@ public class SlideshowController {
     		thumbnail.setImage(new Image(photo.getPhotoFile().toURI().toString()));
     		caption.setText(photo.getCaption());
     		tags.setText(photo.getTags());
-    		date.setText(dateAdded);
+    		date.setText(sdf.format(photo.getDate()));
     	
     	} else {
     		caption.setText("");
@@ -91,6 +92,11 @@ public class SlideshowController {
     	}
     }
 	
+    /**
+     * Displays the previous photo when previous button is clicked
+     * 
+     * @param none
+     */
     @FXML
 	private void handlePrevious() {
 		if (position > 0) {
@@ -99,7 +105,7 @@ public class SlideshowController {
 			thumbnail.setImage(new Image(currentAlbum.getPhotos().get(position).getPhotoFile().toURI().toString()));
 			caption.setText(currentAlbum.getPhotos().get(position).getCaption());
     		tags.setText(currentAlbum.getPhotos().get(position).getTags());
-    		date.setText(dateAdded);
+    		date.setText(sdf.format(currentAlbum.getPhotos().get(position).getDate()));
     		
 		} else if (position > 0 && position < (numberOfPhotos-1)) {
 			buttonBar.getButtons().get(1).setDisable(false);
@@ -107,6 +113,11 @@ public class SlideshowController {
 		} 
 	}
 	
+    /**
+     * Displays the previous photo when previous button is clicked
+     * 
+     * @param none
+     */
 	@FXML
 	private void handleNext() {
 		if (position < (numberOfPhotos-1)) {
@@ -115,7 +126,7 @@ public class SlideshowController {
 			thumbnail.setImage(new Image(currentAlbum.getPhotos().get(position).getPhotoFile().toURI().toString()));
 			caption.setText(currentAlbum.getPhotos().get(position).getCaption());
     		tags.setText(currentAlbum.getPhotos().get(position).getTags());
-    		date.setText(dateAdded);
+    		date.setText(sdf.format(currentAlbum.getPhotos().get(position).getDate()));
     		
 		} else if (position > 0 && position < (numberOfPhotos-1)) {
 			buttonBar.getButtons().get(1).setDisable(false);
@@ -123,6 +134,11 @@ public class SlideshowController {
 		} 
 	}
     
+	/**
+     * Returns to the current album page
+     * 
+     * @param none
+     */
 	@FXML
 	private void handleBackToPhotoList() {
 		photoAlbum.showPhotoList(currentAlbum);

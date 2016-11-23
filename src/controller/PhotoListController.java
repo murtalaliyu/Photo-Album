@@ -62,7 +62,7 @@ public class PhotoListController {
     /**
      * This method sets the photo album so that we have a reference
      * to the current photo album.
-     * @param photoAlbum
+     * @param photoAlbum, currentAlbum
      */
     
     public void setState(PhotoAlbum photoAlbum, Album currentAlbum) {
