@@ -8,6 +8,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 
 public class User implements Serializable {
@@ -213,6 +215,26 @@ public class User implements Serializable {
 	    	}
 			//finished searching all photos in this album
 		}
+    	return result;
+    }
+    
+    public ObservableList<Picture> searchByDate(String dateQuery) {
+    	ObservableList<Picture> result = FXCollections.observableArrayList();
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    	String individual = "";
+    	
+    	for(Album tempAlbum : albumz){
+			for(Picture photo : tempAlbum.getPhotos()){
+	    		individual = df.format(photo.getDate());
+	    		System.out.printf("We are comparing %s to %s\n",individual,dateQuery);
+	    		if (dateQuery.equals(individual)) {
+	    			result.add(photo);
+	    		}
+	    	}
+			//finished searching all photos in this album
+		}
+
+		System.out.println("observable list<pics> :" + result.size());
     	return result;
     }
     
